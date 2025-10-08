@@ -26,10 +26,12 @@ pipeline {
       }
     }
 
-    steps {
+    stage('Publicar relatórios') {
+      steps {
         echo 'Publicando relatórios JSON do Mochawesome...'
         archiveArtifacts artifacts: 'cypress/reports/**/*.json', fingerprint: true
       }
+    }
   }
 
   post {
