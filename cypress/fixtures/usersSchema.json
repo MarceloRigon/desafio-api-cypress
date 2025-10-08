@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "firstName",
+    "lastName",
+    "age",
+    "gender",
+    "email",
+    "username",
+    "birthDate",
+    "role"
+  ],
+  "properties": {
+    "id": { "type": "number" },
+    "firstName": { "type": "string" },
+    "lastName": { "type": "string" },
+    "age": { "type": "number" },
+    "gender": { "type": "string" },
+    "email": { "type": "string" },
+    "username": { "type": "string" },
+    "birthDate": { "type": "string" },
+    "role": { "type": "string" }
+  }
+}
