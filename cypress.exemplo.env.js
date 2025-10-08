@@ -1,8 +1,0 @@
-/*{
-  "API_BASE_URL": "https://api.exemplo.com",
-  "USERNAME": "usuario_teste",
-  "PASSWORD": "senha_teste",
-  "AUTH_TOKEN": "",
-  "MD5_SECRET": ""
-}
-*/
