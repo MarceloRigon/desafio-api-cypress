@@ -63,8 +63,7 @@ Jenkinsfile                 # Pipeline
 1. **Clone o repositório**
 
 ```bash
-git clone <url-do-repositorio>
-cd <nome-do-projeto>
+git clone https://github.com/MarceloRigon/desafio-api-cypress.git
 ```
 
 2. **Instale as dependências**
