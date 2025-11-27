@@ -1,25 +1,27 @@
-# 🧪 Automação de API com Cypress
+---
 
-Este projeto contém uma suíte de testes automatizados desenvolvida com **Cypress**, voltada para validação de endpoints de API, autenticação e manipulação de usuários e produtos.
+# 🧪 API Automation with Cypress
+
+This project contains an automated test suite developed with **Cypress**, focused on validating API endpoints, authentication, and user and product management.
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Technologies Used
 
-- [Cypress](https://www.cypress.io/) – Framework de testes de front-end e API
-- [Node.js](https://nodejs.org/) – Ambiente de execução JavaScript
-- [Jenkins](https://www.jenkins.io/) – Integração e entrega contínua (CI/CD)
+* [Cypress](https://www.cypress.io/) – Front-end and API testing framework
+* [Node.js](https://nodejs.org/) – JavaScript runtime environment
+* [Jenkins](https://www.jenkins.io/) – Continuous integration and delivery (CI/CD)
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 cypress/
-├── config/                # Configurações e dados de ambiente
+├── config/                # Environment settings and data
 │   ├── endpoints.js
 │   └── testData.js
-├── e2e/                   # Testes principais
+├── e2e/                   # Main tests
 │   ├── auth/
 │   │   └── login.cy.js
 │   ├── products/
@@ -27,7 +29,7 @@ cypress/
 │   └── users/
 │       ├── getUserById.cy.js
 │       └── getUsers.cy.js
-├── fixtures/              # Schemas e dados mockados
+├── fixtures/              # Schemas and mocked data
 │   ├── createProductSchema.json
 │   ├── loginSchema.json
 │   ├── testData.json
@@ -37,7 +39,7 @@ cypress/
 └── reports/     
 └── screenshots/
 │             
-└── support/               # Comandos e serviços auxiliares
+└── support/               # Commands and auxiliary services
     ├── api/
     │   ├── authService.js
     │   └── userService.js
@@ -49,62 +51,63 @@ cypress/
     ├── commands.js
     └── e2e.js
 
-cypress.config.js           # Configuração principal do Cypress
-cypress.exemplo.env.json    # Variáveis de ambiente (exemplo)
-packege.json                # Dependências do projeto
-packege-lock.json           # Dependências do projeto
+cypress.config.js           # Main Cypress configuration
+cypress.exemplo.env.json    # Example environment variables
+package.json                # Project dependencies
+package-lock.json           # Locked dependency tree
 Jenkinsfile                 # Pipeline
 ```
 
 ---
 
-## ⚙️ Instalação
+## ⚙️ Installation
 
-1. **Clone o repositório**
+1. **Clone the repository**
 
 ```bash
 git clone https://github.com/MarceloRigon/desafio-api-cypress.git
 ```
 
-2. **Instale as dependências**
+2. **Install the dependencies**
 
 ```bash
 npm install
 ```
 
-3. **Configure variáveis de ambiente**
+3. **Configure environment variables**
 
-Crie um arquivo `cypress.env.json` baseado em `cypress.env.example.json` e insira suas credenciais e endpoints reais.
+Create a `cypress.env.json` file based on `cypress.env.example.json` and insert your real credentials and endpoints.
 
 ---
-### ⚙️ Suporte Opcional ao MD5
 
-O projeto possui suporte opcional para autenticação via **hash MD5 dinâmico**, implementado no serviço `AuthService` apenas para fins didáticos ou para uso em futuros backends que exijam esse tipo de validação.
+### ⚙️ Optional MD5 Support
 
-Você pode ativar o modo MD5 ajustando no arquivo `cypress.env.json`:
+The project includes optional support for authentication via **dynamic MD5 hash**, implemented in the `AuthService` only for educational purposes or for use with future backends that require this type of validation.
+
+You can enable MD5 mode by adjusting the `cypress.env.json` file:
 
 ```json
 "USE_MD5": true
 ```
 
-> 🔒 **Atenção:** este modo **não deve ser usado com o DummyJSON**, pois o servidor **não reconhece campos de hash** no corpo da requisição.
+> 🔒 **Warning:** this mode **must not be used with DummyJSON**, because the server **does not recognize hash fields** in the request body.
 
 ---
 
-### 🚫 Por que o MD5 não pode ser utilizado com o DummyJSON
+### 🚫 Why MD5 Cannot Be Used with DummyJSON
 
-O endpoint `/auth/login` do DummyJSON foi projetado para receber apenas `username` e `password`.  
-Quando o modo MD5 é ativado, o cliente envia um corpo diferente, como:
+The `/auth/login` endpoint from DummyJSON is designed to receive only `username` and `password`.
+When MD5 mode is enabled, the client sends a different body, such as:
 
 ```json
 {
-  "username": "usuario_teste",
+  "username": "test_user",
   "timestamp": 1234567890,
   "hash": "9a761gd76gfha761ha..."
 }
 ```
 
-Como o backend **não reconhece os campos `timestamp` ou `hash`**, a API retorna o seguinte erro:
+Since the backend **does not recognize the `timestamp` or `hash` fields**, the API returns the following error:
 
 ```
 Response: 400 Bad Request
@@ -113,54 +116,56 @@ Response: 400 Bad Request
 }
 ```
 
-Ou no log do Cypress:
+Or in the Cypress log:
 
 ```
 request POST 400 /auth/login
 expected 400 to be one of [200, 201]
 ```
 
-Esse erro confirma que o DummyJSON **não valida hashes MD5** nem aceita autenticação assinada.  
-Por isso, o valor padrão da flag foi mantido como:
+This confirms that DummyJSON **does not validate MD5 hashes** nor supports signed authentication.
+For this reason, the default value of the flag remains:
 
 ```json
 "USE_MD5": false
 ```
 
-para que os testes utilizem a autenticação padrão suportada oficialmente.
+so that tests use the authentication format officially supported.
 
 ---
 
-### 🧩 Conclusão
+### 🧩 Conclusion
 
-- O projeto suporta **dois modos de autenticação**:  
-  🔸 *Padrão* — via `username` e `password` (ativo por padrão)  
-  🔸 *Opcional* — via `MD5` (para uso com outros backends, desativado por padrão)  
+* The project supports **two authentication modes**:
+  🔸 *Standard* — via `username` and `password` (default)
+  🔸 *Optional* — via `MD5` hash (for other backends, disabled by default)
 
-- Ao utilizar o DummyJSON, **sempre mantenha `"USE_MD5": false`**.  
-- O erro `400 Bad Request` ocorre porque o backend **não reconhece o formato de login com hash**.
+* When using DummyJSON, **always keep `"USE_MD5": false"`.**
+
+* The `400 Bad Request` error occurs because the backend **does not recognize the hash-based login format**.
 
 ---
 
-## ▶️ Execução dos Testes
+## ▶️ Running the Tests
 
-### Modo interativo (Cypress GUI)
+### Interactive mode (Cypress GUI)
+
 ```bash
 npx cypress open
 ```
 
-### Modo headless (para CI/CD)
+### Headless mode (for CI/CD)
+
 ```bash
 npx cypress run
 ```
 
-Por padrão, os relatórios de execução serão exibidos no terminal e também na pasta reports, logs e screenshots.
+By default, execution reports will be displayed in the terminal and also stored in the `reports`, `logs`, and `screenshots` folders.
 
 ---
 
-## 🔄 Integração Contínua (Jenkins)
+## 🔄 Continuous Integration (Jenkins)
 
-O arquivo `Jenkinsfile` define uma pipeline para build, instalação de dependências e execução automatizada dos testes.
+The `Jenkinsfile` defines a pipeline for build steps, dependency installation, and automated test execution.
 
 ---
-
